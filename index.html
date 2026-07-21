@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KunaDV - Programowanie z Klasą</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&amp;family=Press+Start+2P&amp;display=swap');
+        
+        :root {
+            --primary: #00ff9d;
+            --bg: #0f1620;
+            --accent: #ff00aa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: var(--bg);
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a2333, #0f1620);
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+            position: relative;
+        }
+        
+        .logo {
+            width: 180px;
+            height: 180px;
+            background: #1a2333;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 6px solid var(--primary);
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.5);
+            overflow: hidden;
+        }
+        
+        nav {
+            background: rgba(15, 22, 32, 0.95);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            color: white;
+            text-shadow: 0 0 10px var(--primary);
+        }
+        
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 22, 32, 0.85);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+            color: #a0ffa0;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: #0f1620;
+            padding: 1rem 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary);
+        }
+        
+        section {
+            padding: 4rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .about {
+            background: #1a2333;
+        }
+        
+        .services {
+            background: #0f1620;
+        }
+        
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: #1a2333;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 2px solid #00ff9d33;
+            transition: all 0.4s;
+        }
+        
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+        }
+        
+        footer {
+            background: #0a0f1a;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 3px solid var(--accent);
+        }
+        
+        .terminal {
+            background: #000;
+            color: #00ff9d;
+            padding: 1.5rem;
+            font-family: 'Roboto Mono', monospace;
+            white-space: pre-wrap;
+            border: 2px solid var(--primary);
+            margin: 2rem 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <!-- Placeholder for KunaDV logo -->
+            <span style="font-size: 4rem; color: #00ff9d;">🐾</span>
+        </div>
+        <h1>KunaDV</h1>
+        <p style="color: #00ff9d; font-size: 1.2rem;">Kuna Koduje • Debuguje • Vibe'uje</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#o-mnie">O mnie</a></li>
+            <li><a href="#uslugi">Usługi</a></li>
+            <li><a href="#projekty">Projekty</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>KUNA<span style="color:#ff00aa;">DV</span></h1>
+            <p class="tagline">Programowanie z pazurem i humorem</p>
+            <a href="#uslugi" class="btn">Zacznij projekt</a>
+            <a href="#projekty" class="btn" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">Zobacz projekty</a>
+        </div>
+    </section>
+
+    <section id="o-mnie" class="about">
+        <h2>O KunaDV</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>👩‍💻 Kim jestem?</h3>
+                <p>Cześć! Jestem KunaDV – programistyczna kuna, która koduje w Pythonie, JavaScripcie, Go i czasem w C++. Lubię czysty kod, dobre praktyki i kawę o 3 w nocy.</p>
+            </div>
+            <div class="card">
+                <h3>🎯 Misja</h3>
+                <p>Tworzę nowoczesne aplikacje webowe, automatyzacje i narzędzia, które nie tylko działają, ale też wyglądają świetnie. Debuguję z klasą.</p>
+            </div>
+        </div>
+   
