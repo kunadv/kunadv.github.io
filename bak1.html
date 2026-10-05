@@ -2,25 +2,68 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Firma szkoleniowa</title>
+    <title>Obuwie</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <img src="baner.jpg" alt="Szkolenia">
+        <h1>Obuwie męskie</h1>
     </header>
-    <nav>
-        <ul>
-            <li><a href="index.html">Strona główna</a></li>
-            <li><a href="szkolenia.php">Szkolenia</a></li>
-        </ul>
-    </nav>
+
     <main>
-        <h1>Zapraszamy do udziału<br>w szkoleniach<br>z branży IT</h1>
+        <form action="zamow.php" method="post">
+            <label>Model: 
+                <select name="model" class="kontrolka">
+                    <?php
+                    // Skrypt 1
+                    $polaczenie = mysqli_connect('localhost', 'root', '', 'obuwie');
+                    $zapytanie1 = "SELECT model FROM produkt";
+                    $wynik1 = mysqli_query($polaczenie, $zapytanie1);
+                    while ($wiersz = mysqli_fetch_array($wynik1)) {
+                        echo "<option value=\"{$wiersz['model']}\">{$wiersz['model']}</option>";
+                    }
+                    ?>
+                </select>
+            </label>
+
+            <label>Rozmiar: 
+                <select name="rozmiar" class="kontrolka">
+                    <option value="40">40</option>
+                    <option value="41">41</option>
+                    <option value="42">42</option>
+                    <option value="43">43</option>
+                </select>
+            </label>
+
+            <label>Liczba par: 
+                <input type="number" name="liczba_par" class="kontrolka" min="1" required>
+            </label>
+
+            <button type="submit" class="kontrolka">Zamów</button>
+        </form>
+
+        <?php
+        // Skrypt 2
+        $zapytanie2 = "SELECT buty.model, buty.nazwa, buty.cena, produkt.nazwa_pliku 
+                       FROM buty 
+                       INNER JOIN produkt ON buty.model = produkt.model";
+        $wynik2 = mysqli_query($polaczenie, $zapytanie2);
+
+        while ($wiersz = mysqli_fetch_array($wynik2)) {
+            echo "<div class=\"buty\">";
+            echo "<img src=\"{$wiersz['nazwa_pliku']}\" alt=\"but męski\">";
+            echo "<h2>{$wiersz['nazwa']}</h2>";
+            echo "<h5>Model: {$wiersz['model']}</h5>";
+            echo "<h4>Cena: {$wiersz['cena']}</h4>";
+            echo "</div>";
+        }
+
+        mysqli_close($polaczenie);
+        ?>
     </main>
+
     <footer>
-        <h2>Firma szkoleniowa, ul. Główna 1, 23-456 Warszawa</h2>
-        <p>Autor: 00000000000</p>
+        <p>Autor strony: 00000000000</p> <!-- tutaj wstaw swój numer PESEL -->
     </footer>
 </body>
 </html>
