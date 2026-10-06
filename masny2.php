@@ -2,50 +2,67 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Firma szkoleniowa</title>
+    <title>Wyszukiwarka miast</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="fav.png">
 </head>
 <body>
-    <div id="kontener">
-        <header>
-            <img src="baner.jpg" alt="Szkolenia">
-        </header>
 
-        <nav>
-            <ul>
-                <li><a href="index.html">Strona główna</a></li>
-                <li><a href="szkolenia.php">Szkolenia</a></li>
-            </ul>
-        </nav>
+    <header>
+        <img src="baner.jpg" alt="Polska">
+    </header>
 
-        <main>
-            <?php
-            $polaczenie = mysqli_connect('localhost', 'root', '', 'firma');
+    <div class="left-top">
+        <h4>Podaj początek nazwy miasta</h4>
+        <form action="index.php" method="post">
+            <input type="text" name="filtr">
+            <input type="submit" value="Szukaj">
+        </form>
+    </div>
 
-            if ($polaczenie) {
-                $zapytanie = "SELECT Data, Temat FROM szkolenia ORDER BY Data ASC;";
-                $wynik = mysqli_query($polaczenie, $zapytanie);
+    <main>
+        <h1>Wyniki wyszukiwania miast z uwzględnieniem filtra:</h1>
+        <?php
+        if (isset($_POST['filtr'])) {
+            $filtr = $_POST['filtr'];
+            
+            echo "<p class='filter-text'>" . htmlspecialchars($filtr) . "</p>";
 
-                $plik = fopen("harmonogram.txt", "w");
+            $conn = mysqli_connect("localhost", "root", "", "wykaz");
 
-                while ($wiersz = mysqli_fetch_array($wynik)) {
-                    $linia = $wiersz['Data'] . " " . $wiersz['Temat'];
-                    
-                    echo "<p>" . $linia . "</p>";
-                    
-                    fwrite($plik, $linia . "\n");
+            if ($conn) {
+                $query = "SELECT wykaz_miasta.nazwa AS miasto, wykaz_wojewodztwa.nazwa AS wojewodztwo 
+                          FROM wykaz_miasta 
+                          JOIN wykaz_wojewodztwa ON wykaz_miasta.id_wojewodztwa = wykaz_wojewodztwa.id 
+                          WHERE wykaz_miasta.nazwa LIKE '$filtr%' 
+                          ORDER BY wykaz_miasta.nazwa ASC;";
+
+                $result = mysqli_query($conn, $query);
+
+                if ($result) {
+                    echo "<table>";
+                    echo "<tr><th>Miasto</th><th>Województwo</th></tr>";
+
+                    while ($row = mysqli_fetch_array($result)) {
+                        echo "<tr>";
+                        echo "<td>" . $row['miasto'] . "</td>";
+                        echo "<td>" . $row['wojewodztwo'] . "</td>";
+                        echo "</tr>";
+                    }
+
+                    echo "</table>";
                 }
 
-                fclose($plik);
-                mysqli_close($polaczenie);
+                mysqli_close($conn);
             }
-            ?>
-        </main>
+        }
+        ?>
+    </main>
 
-        <footer>
-            <h2>Firma szkoleniowa, ul. Główna 1, 23-456 Warszawa</h2>
-            <p>Autor: 00000000000</p>
-        </footer>
+    <div class="left-bottom">
+        <p>Egzamin INF.03</p>
+        <p>Autor: 00000000000</p>
     </div>
+
 </body>
 </html>
