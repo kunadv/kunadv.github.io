@@ -1,45 +1,54 @@
 * {
-    font-family: Cambria, serif;
+    font-family: Helvetica;
 }
 
-header, footer {
-    background-color: Sienna;
-    color: white;
-    padding: 5px;
+body {
+    background-color: LightSalmon;
     text-align: center;
+    margin: 0;
+}
+
+header img {
+    width: 100%;
+}
+
+.left-top {
+    width: 30%;
+    height: 400px;
+    float: left;
+}
+
+.left-bottom {
+    background-color: DarkSalmon;
+    width: 30%;
+    height: 100px;
+    float: left;
+    clear: left;
 }
 
 main {
-    background-color: AntiqueWhite;
-    height: 700px;
-    font-size: 120%;
+    background-color: DarkSalmon;
+    width: 70%;
+    height: 500px;
+    float: right;
     overflow: auto;
 }
 
-.kontrolka {
-    width: 150px;
-    margin: 10px;
+.filter-text {
+    font-style: italic;
+    font-size: 200%;
+    padding: 10px;
 }
 
-.buty {
+.filter-text:hover {
+    color: GhostWhite;
+}
+
+table, td {
+    border: 1px dotted Maroon;
+}
+
+table {
     width: 70%;
-    margin: 15px;
-    padding: 7px;
-    border: 1px solid Sienna;
-    border-radius: 30px;
-}
-
-.buty:hover {
-    background-color: Linen;
-}
-
-img {
-    float: left;
-    margin-right: 30px;
-}
-
-h4 {
-    background-color: Sienna;
-    color: white;
-    text-align: right;
+    margin: auto;
 }
