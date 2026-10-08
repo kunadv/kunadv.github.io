@@ -2,68 +2,106 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Obuwie</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ZDOBYWCY GÓR</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <header>
-        <h1>Obuwie męskie</h1>
+        <h1>Klub zdobywców gór polskich</h1>
     </header>
 
-    <main>
-        <form action="zamow.php" method="post">
-            <label>Model: 
-                <select name="model" class="kontrolka">
-                    <?php
-                    // Skrypt 1
-                    $polaczenie = mysqli_connect('localhost', 'root', '', 'obuwie');
-                    $zapytanie1 = "SELECT model FROM produkt";
-                    $wynik1 = mysqli_query($polaczenie, $zapytanie1);
-                    while ($wiersz = mysqli_fetch_array($wynik1)) {
-                        echo "<option value=\"{$wiersz['model']}\">{$wiersz['model']}</option>";
-                    }
-                    ?>
+    <nav>
+        <a href="kw1.png">kwerenda 1</a>
+        <a href="kw2.png">kwerenda2</a>
+        <a href="kw3.png">kwerenda3</a>
+        <a href="kw4.png">kwerenda4</a>
+    </nav>
+
+    <section id="lewy">
+        <img src="logo.png" alt="logo zdobywcy">
+        <h3>razem z nami:</h3>
+        <ul>
+            <li>wyjazdy</li>
+            <li>szkolenia</li>
+            <li>rekreacja</li>
+            <li>wypoczynek</li>
+            <li>wyzwania</li>
+        </ul>
+    </section>
+
+    <section id="prawy">
+        <h2>Dołącz do naszego zespołu!</h2>
+        <p>Wpisz swoje dane do formularza:</p>
+
+        <form action="zdobywcy.php" method="post">
+            <label>Nazwisko: <input type="text" name="nazwisko"></label>
+            <label>Imię: <input type="text" name="imie"></label>
+            <label>Funkcja: 
+                <select name="funkcja">
+                    <option value="uczestnik">uczestnik</option>
+                    <option value="przewodnik">przewodnik</option>
+                    <option value="zaopatrzeniowiec">zaopatrzeniowiec</option>
+                    <option value="organizator">organizator</option>
+                    <option value="ratownik">ratownik</option>
                 </select>
             </label>
-
-            <label>Rozmiar: 
-                <select name="rozmiar" class="kontrolka">
-                    <option value="40">40</option>
-                    <option value="41">41</option>
-                    <option value="42">42</option>
-                    <option value="43">43</option>
-                </select>
-            </label>
-
-            <label>Liczba par: 
-                <input type="number" name="liczba_par" class="kontrolka" min="1" required>
-            </label>
-
-            <button type="submit" class="kontrolka">Zamów</button>
+            <label>Email: <input type="email" name="email"></label>
+            <input type="submit" value="Dodaj">
         </form>
 
         <?php
-        // Skrypt 2
-        $zapytanie2 = "SELECT buty.model, buty.nazwa, buty.cena, produkt.nazwa_pliku 
-                       FROM buty 
-                       INNER JOIN produkt ON buty.model = produkt.model";
-        $wynik2 = mysqli_query($polaczenie, $zapytanie2);
+        // Skrypt 2: Obsługa dodawania osoby z formularza
+        if (!empty($_POST['nazwisko']) && !empty($_POST['imie']) && !empty($_POST['funkcja']) && !empty($_POST['email'])) {
+            $polaczenie = mysqli_connect('localhost', 'root', '', 'zdobywcy');
 
-        while ($wiersz = mysqli_fetch_array($wynik2)) {
-            echo "<div class=\"buty\">";
-            echo "<img src=\"{$wiersz['nazwa_pliku']}\" alt=\"but męski\">";
-            echo "<h2>{$wiersz['nazwa']}</h2>";
-            echo "<h5>Model: {$wiersz['model']}</h5>";
-            echo "<h4>Cena: {$wiersz['cena']}</h4>";
-            echo "</div>";
+            if ($polaczenie) {
+                $nazwisko = $_POST['nazwisko'];
+                $imie = $_POST['imie'];
+                $funkcja = $_POST['funkcja'];
+                $email = $_POST['email'];
+
+                $zapytanie4 = "INSERT INTO osoby (nazwisko, imie, funkcja, email) VALUES ('$nazwisko', '$imie', '$funkcja', '$email')";
+                mysqli_query($polaczenie, $zapytanie4);
+
+                mysqli_close($polaczenie);
+            }
         }
-
-        mysqli_close($polaczenie);
         ?>
-    </main>
+
+        <table>
+            <tr>
+                <th>Nazwisko</th>
+                <th>Imię</th>
+                <th>Funkcja</th>
+                <th>Email</th>
+            </tr>
+            <?php
+            // Skrypt 1: Wyświetlanie osób w tabeli
+            $polaczenie = mysqli_connect('localhost', 'root', '', 'zdobywcy');
+
+            if ($polaczenie) {
+                $zapytanie2 = "SELECT nazwisko, imie, funkcja, email FROM osoby";
+                $wynik = mysqli_query($polaczenie, $zapytanie2);
+
+                while ($wiersz = mysqli_fetch_row($wynik)) {
+                    echo "<tr>";
+                    echo "<td>" . $wiersz[0] . "</td>";
+                    echo "<td>" . $wiersz[1] . "</td>";
+                    echo "<td>" . $wiersz[2] . "</td>";
+                    echo "<td>" . $wiersz[3] . "</td>";
+                    echo "</tr>";
+                }
+
+                mysqli_close($polaczenie);
+            }
+            ?>
+        </table>
+    </section>
 
     <footer>
-        <p>Autor strony: 00000000000</p> <!-- tutaj wstaw swój numer PESEL -->
+        <p>Stronę wykonał: 00000000000</p>
     </footer>
+
 </body>
 </html>
