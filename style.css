@@ -1,65 +1,83 @@
-body {
-    background-color: #DDEEDD;
-    font-family: Tahoma;
-    text-align: center;
-}
-
-ul {
-    list-style-type: square;
-}
-
-li {
-    text-align: left;
-}
-
-header, footer {
+/* Domyślne formatowanie wszystkich selektorów */
+* {
+    font-family: Garamond;
     color: white;
-    font-size: 120%;
-    padding: 10px;
 }
 
+/* Blok nagłówkowy */
 header {
-    background-color: #409FFF;
+    background-color: Indigo;
+    text-align: center;
+    padding: 2px;
 }
 
+/* Sekcja lewa i prawa */
+aside, section:nth-of-type(2) {
+    background-color: Indigo;
+    height: 600px;
+}
+
+/* Sekcja środkowa */
+main {
+    background-color: black;
+    height: 600px;
+    overflow-y: scroll; /* zawsze widoczne paski przewijania */
+}
+
+/* Stopka */
 footer {
-    background-color: #A0A0A0;
+    background-color: Indigo;
+    height: 150px;
 }
 
-nav {
-    background-color: #FFFFFF;
-    word-spacing: 30px;
-    padding: 10px;
+/* Responsywność dla ekranów o szerokości większej niż 800px */
+@media screen and (min-width: 801px) {
+    aside {
+        width: 20%;
+        float: left;
+    }
+    main {
+        width: 60%;
+        float: left;
+    }
+    section:nth-of-type(2) {
+        width: 20%;
+        float: left;
+    }
+    footer {
+        clear: both;
+    }
 }
 
-#lewy {
-    background-color: #E4C0A8;
-    width: 30%;
-    height: 650px;
-    float: left;
+/* Dla ekranów o szerokości mniejszej lub równej 800px (domyślnie blokowe pod jeden za drugim) */
+@media screen and (max-width: 800px) {
+    aside, main, section:nth-of-type(2) {
+        width: 100%;
+        float: none;
+    }
 }
 
-#prawy {
-    width: 70%;
-    height: 650px;
-    overflow: auto;
-    float: left;
+/* Oznaczenie liczby punktów (ilustracja 4) */
+.punkty {
+    background-color: Tomato;
+    border-radius: 50%;
+    padding: 5px;
 }
 
-a {
-    color: #009900;
+/* Element listy */
+li {
+    padding: 5px;
 }
 
-table, td, th {
-    border: 1px solid black;
+/* Bloki gier w sekcji środkowej */
+main div {
+    display: inline-block;
+    text-align: center;
+    padding: 3px;
 }
 
-table {
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-img {
-    width: 90%;
+/* Pola edycyjne */
+input {
+    margin: 10px;
+    color: Indigo;
 }
