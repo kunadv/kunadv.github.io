@@ -1,110 +1,80 @@
 
-    <?php
-// Połączenie z bazą danych
-$polaczenie = mysqli_connect("localhost", "root", "", "gry");
-if (!$polaczenie) {
-    die("Błąd połączenia z bazą danych");
-}
-
-// Skrypt 4: Obsługa formularza dodawania nowej gry (z sekcji prawej)
-if (isset($_POST['nazwa']) && !empty($_POST['nazwa'])) {
-    $nazwa = $_POST['nazwa'];
-    $opis = $_POST['opis'];
-    $cena = $_POST['cena'];
-    $zdjecie = $_POST['zdjecie'];
-    $punkty = 0;
-
-    $sql_insert = "INSERT INTO gry (nazwa, opis, punkty, cena, zdjecie) VALUES ('$nazwa', '$opis', $punkty, $cena, '$zdjecie')";
-    mysqli_query($polaczenie, $sql_insert);
-}
-?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Gry komputerowe</title>
+    <title>Komputery</title>
     <link rel="stylesheet" href="styl.css">
+    <link rel="icon" href="favicon.png">
+    <script>
+        function wyslijFormularz() {
+            let imie = document.getElementById('imie').value;
+            let nazwisko = document.getElementById('nazwisko').value;
+            let email = document.getElementById('email').value.toLowerCase();
+            let usluga = document.getElementById('usluga').value;
+            
+            let wynikDiv = document.getElementById('wynik');
+            wynikDiv.innerHTML = imie + ' ' + nazwisko + '<br>' + email + '<br>Usługa: ' + usluga;
+        }
+    </script>
 </head>
 <body>
-
-    <!-- Blok nagłówkowy -->
-    <header>
-        <h1>Ranking gier komputerowych</h1>
-    </header>
-
-    <!-- Blok sekcji lewej -->
-    <aside>
-        <h3>Top 5 gier w tym miesiącu</h3>
-        <ul>
-            <?php
-            // Skrypt 1: Zapytanie 3 (top 5 gier)
-            $zapytanie3 = "SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5";
-            $wynik3 = mysqli_query($polaczenie, $zapytanie3);
-            while ($row3 = mysqli_fetch_row($wynik3)) {
-                echo "<li>$row3[0] <span class=\"punkty\">$row3[1]</span></li>";
-            }
-            ?>
-        </ul>
-        <h3>Nasz sklep</h3>
-        <p><a href="http://sklep.gry.pl">Tu kupisz gry</a></p>
-        <h3>Stronę wykonał</h3>
-        <p>00000000000</p> <!-- Tutaj wpisz swój numer zdającego -->
-    </aside>
-
-    <!-- Blok sekcji środkowej -->
-    <main>
-        <?php
-        // Skrypt 2: Zapytanie 1 (wyświetlanie obrazów z bazy)
-        $zapytanie1 = "SELECT id, nazwa, zdjecie FROM gry";
-        $wynik1 = mysqli_query($polaczenie, $zapytanie1);
-        while ($row1 = mysqli_fetch_array($wynik1)) {
-            echo "<div>";
-            echo "<img src=\"$row1[zdjecie]\" alt=\"$row1[nazwa]\" title=\"$row1[id]\">";
-            echo "<p>$row1[zdjecie]</p>";
-            echo "</div>";
-        }
-        ?>
-    </main>
-
-    <!-- Blok sekcji prawej -->
-    <section>
-        <h3>Dodaj nową grę</h3>
-        <form action="gry.php" method="post">
-            <label>nazwa</label><br>
-            <input type="text" name="nazwa"><br>
-            <label>opis</label><br>
-            <input type="text" name="opis"><br>
-            <label>cena</label><br>
-            <input type="text" name="cena"><br>
-            <label>zdjęcie</label><br>
-            <input type="text" name="zdjęcie"><br>
-            <button type="submit">DODAJ</button>
-        </form>
-    </section>
-
-    <!-- Blok stopki -->
-    <footer>
-        <form action="gry.php" method="post">
-            <input type="number" name="id_gry">
-            <button type="submit">Pokaż opis</button>
-        </form>
-        <?php
-        // Skrypt 3: Obsługa formularza w stopce (zapytanie 2 zmodyfikowane o podane ID)
-        if (isset($_POST['id_gry']) && !empty($_POST['id_gry'])) {
-            $id_gry = $_POST['id_gry'];
-            $zapytanie2 = "SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id = $id_gry";
-            $wynik2 = mysqli_query($polaczenie, $zapytanie2);
-            if ($row2 = mysqli_fetch_row($wynik2)) {
-                echo "<h2>$row2[0], $row2[2] punktów, $row2[3] zł</h2>";
-                echo "<p>$row2[1]</p>";
-            }
-        }
-        ?>
-    </footer>
-
+    <div id="kontener">
+        <header>
+            <img src="animacja.gif" alt="Pogotowie komputerowe">
+        </header>
+        <nav>
+            <a href="index.html">Strona Główna</a>
+            <a href="kontakt.html">Kontakt</a>
+        </nav>
+        <main>
+            <section></section>
+            <section>
+                <h2>Kontakt</h2>
+                <table>
+                    <tr>
+                        <td>Imię:</td>
+                        <td><input type="text" id="imie"></td>
+                    </tr>
+                    <tr>
+                        <td>Nazwisko:</td>
+                        <td><input type="text" id="nazwisko"></td>
+                    </tr>
+                    <tr>
+                        <td>E-mail:</td>
+                        <td><input type="email" id="email"></td>
+                    </tr>
+                    <tr>
+                        <td>Zgłoszenie:</td>
+                        <td>
+                            <select id="usluga">
+                                <option value="naprawa komputerów">naprawa komputerów</option>
+                                <option value="odzyskiwanie danych">odzyskiwanie danych</option>
+                                <option value="wirusy">wirusy</option>
+                                <option value="konfiguracja LAN">konfiguracja LAN</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="checkbox" id="kopia" checked> Wyślij kopię wiadomości</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="reset">Czyść</button>
+                            <button type="button" onclick="wyslijFormularz()">Wyślij</button>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <p id="wynik"></p>
+            </section>
+            <section></section>
+        </main>
+        <footer>
+            Autor: <i>00000000000</i>
+        </footer>
+    </div>
 </body>
 </html>
-<?php
-// Zamknięcie połączenia z bazą danych
-mysqli_close($polaczenie);
-?>
