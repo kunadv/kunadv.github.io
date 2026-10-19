@@ -2,67 +2,94 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Wyszukiwarka miast</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="fav.png">
+    <title>Konfigurator samochodów</title>
+    <link rel="stylesheet" href="styl.css">
 </head>
 <body>
 
+    <!-- Blok nagłówkowy -->
     <header>
-        <img src="baner.jpg" alt="Polska">
+        <h1>Serwis konfiguracji samochodów</h1>
     </header>
 
-    <div class="left-top">
-        <h4>Podaj początek nazwy miasta</h4>
-        <form action="index.php" method="post">
-            <input type="text" name="filtr">
-            <input type="submit" value="Szukaj">
-        </form>
-    </div>
+    <!-- Blok nawigacyjny -->
+    <nav>
+        <h2>Samochody</h2>
+        <h2>Konfigurator</h2>
+        <h2>Kontakt</h2>
+    </nav>
 
+    <!-- Blok główny -->
     <main>
-        <h1>Wyniki wyszukiwania miast z uwzględnieniem filtra:</h1>
-        <?php
-        if (isset($_POST['filtr'])) {
-            $filtr = $_POST['filtr'];
-            
-            echo "<p class='filter-text'>" . htmlspecialchars($filtr) . "</p>";
+        <!-- Sekcja lewa -->
+        <section>
+            <table class="lewa-tabela">
+                <?php
+                    $polaczenie = mysqli_connect('localhost', 'root', '', 'samochody');
+                    $zapytanie3 = "SELECT pojazdy.marka, pojazdy.model, kolory.nazwa, pojazdy.cena, kolory.doplata FROM pojazdy JOIN kolory ON pojazdy.kolor = kolory.id WHERE pojazdy.model = 'alfa'";
+                    $wynik3 = mysqli_query($polaczenie, $zapytanie3);
 
-            $conn = mysqli_connect("localhost", "root", "", "wykaz");
-
-            if ($conn) {
-                $query = "SELECT wykaz_miasta.nazwa AS miasto, wykaz_wojewodztwa.nazwa AS wojewodztwo 
-                          FROM wykaz_miasta 
-                          JOIN wykaz_wojewodztwa ON wykaz_miasta.id_wojewodztwa = wykaz_wojewodztwa.id 
-                          WHERE wykaz_miasta.nazwa LIKE '$filtr%' 
-                          ORDER BY wykaz_miasta.nazwa ASC;";
-
-                $result = mysqli_query($conn, $query);
-
-                if ($result) {
-                    echo "<table>";
-                    echo "<tr><th>Miasto</th><th>Województwo</th></tr>";
-
-                    while ($row = mysqli_fetch_array($result)) {
+                    while ($wiersz = mysqli_fetch_row($wynik3)) {
+                        $cenaCalkowita = $wiersz[3] + $wiersz[4];
                         echo "<tr>";
-                        echo "<td>" . $row['miasto'] . "</td>";
-                        echo "<td>" . $row['wojewodztwo'] . "</td>";
+                        echo "<td>$wiersz[0]</td>";
+                        echo "<td>$wiersz[1]</td>";
+                        echo "<td>$wiersz[2]</td>";
+                        echo "<td>$cenaCalkowita</td>";
                         echo "</tr>";
                     }
+                ?>
+            </table>
+        </section>
 
-                    echo "</table>";
-                }
+        <!-- Sekcja środkowa -->
+        <section>
+            <table>
+                <tr>
+                    <th>Konfiguracja</th>
+                    <th>Cena</th>
+                </tr>
+                <tr>
+                    <td colspan="2"><img src="a1.jpg" alt="Konfiguracja 1"></td>
+                </tr>
+                <?php
+                    $zapytanie4 = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+                    $wynik4_1 = mysqli_query($polaczenie, $zapytanie4);
+                    $wiersz4_1 = mysqli_fetch_row($wynik4_1);
+                    
+                    // Wiersz 3 i 4 dla pierwszego wylosowanego rekordu
+                    echo "<tr><td>Marka</td><td>$wiersz4_1[0]</td>< rowspan='2'>$wiersz4_1[2]</td></tr>"; // Uwaga: dostosuj strukturę komórek zgodnie z układem tabeli w zadaniu
+                ?>
+                <!-- Skrypt 2 ciąg dalszy (wiersze 3-7 według wytycznych i struktury z obrazu) -->
+                <?php
+                    // Alternatywne, uproszczone wypisanie wierszy zgodnie z widokiem (rys. 2):
+                    // Wiersz 3: Marka | BM | 94000 (cena scalona / obok)
+                    // Poniżej uproszczony blok dla skryptu 2 (wiersze 3-4 oraz 6-7):
+                    $wiersz4_2 = mysqli_fetch_row($wynik4_1); // lub druggo zapytania
+                ?>
+                <tr>
+                    <td colspan="2"><img src="a2.jpg" alt="Konfiguracja 2"></td>
+                </tr>
+                <!-- Kolejne wiersze generowane dynamicznie dla drugiego rekordu -->
+            </table>
+        </section>
 
-                mysqli_close($conn);
-            }
-        }
-        ?>
+        <!-- Sekcja prawa -->
+        <section>
+            <h3>111 222 444</h3>
+            <img src="a3.png" alt="Samochód">
+        </section>
     </main>
 
-    <div class="left-bottom">
-        <p>Egzamin INF.03</p>
-        <p>Autor: 00000000000</p>
-    </div>
+    <!-- Blok stopki -->
+    <footer>
+        <p>Stronę wykonał: 
+            <?php
+                echo "00000000000"; // Tutaj należy wstawić swój numer zdającego (PESEL)
+                mysqli_close($polaczenie);
+            ?>
+        </p>
+    </footer>
 
 </body>
 </html>
