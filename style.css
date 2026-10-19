@@ -1,83 +1,60 @@
-/* Domyślne formatowanie wszystkich selektorów */
+/* Domyślne ustawienia dla wszystkich selektorów */
 * {
-    font-family: Garamond;
-    color: white;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
 }
 
-/* Blok nagłówkowy */
-header {
-    background-color: Indigo;
-    text-align: center;
+/* Wspólne dla nagłówkowego, nawigacyjnego i stopki */
+header, nav, footer {
+    color: white;
     padding: 2px;
 }
 
-/* Sekcja lewa i prawa */
-aside, section:nth-of-type(2) {
-    background-color: Indigo;
-    height: 600px;
+/* Blok nagłówkowy i stopka */
+header, footer {
+    background-color: DarkGreen;
 }
 
-/* Sekcja środkowa */
-main {
-    background-color: black;
-    height: 600px;
-    overflow-y: scroll; /* zawsze widoczne paski przewijania */
+/* Blok nawigacyjny */
+nav {
+    background-color: ForestGreen;
 }
 
-/* Stopka */
-footer {
-    background-color: Indigo;
-    height: 150px;
+/* Wszystkie bloki sekcji */
+section {
+    background-color: LightGreen;
+    width: 33.3%;
+    height: 550px;
+    padding-top: 10px;
+    overflow: auto;
+    float: left; /* Układ obok siebie */
 }
 
-/* Responsywność dla ekranów o szerokości większej niż 800px */
-@media screen and (min-width: 801px) {
-    aside {
-        width: 20%;
-        float: left;
-    }
-    main {
-        width: 60%;
-        float: left;
-    }
-    section:nth-of-type(2) {
-        width: 20%;
-        float: left;
-    }
-    footer {
-        clear: both;
-    }
-}
-
-/* Dla ekranów o szerokości mniejszej lub równej 800px (domyślnie blokowe pod jeden za drugim) */
-@media screen and (max-width: 800px) {
-    aside, main, section:nth-of-type(2) {
-        width: 100%;
-        float: none;
-    }
-}
-
-/* Oznaczenie liczby punktów (ilustracja 4) */
-.punkty {
-    background-color: Tomato;
-    border-radius: 50%;
-    padding: 5px;
-}
-
-/* Element listy */
-li {
-    padding: 5px;
-}
-
-/* Bloki gier w sekcji środkowej */
-main div {
+/* Selektor nagłówka drugiego stopnia */
+h2 {
+    width: 33%;
     display: inline-block;
-    text-align: center;
-    padding: 3px;
 }
 
-/* Pola edycyjne */
-input {
-    margin: 10px;
-    color: Indigo;
+/* Wspólne dla tabeli, komórki tabeli i komórki nagłówkowej */
+table, td, th {
+    border: 1px solid DarkGreen;
+}
+
+/* Dodatkowo dla tabeli */
+table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+/* Obrazy z bloku środkowego */
+section img {
+    width: 95%;
+    border-radius: 8px;
+}
+
+/* Zmiana koloru tła wierszy lewej tabeli po najechaniu kursorem */
+.lewa-tabela tr:hover {
+    background-color: ForestGreen;
 }
