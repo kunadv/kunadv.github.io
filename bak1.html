@@ -1,70 +1,73 @@
+/* Domyślne formatowanie wszystkich selektorów */
+* {
+    font-family: Georgia;
+    color: white;
+}
 
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Biuro turystyczne</title>
-    <link rel="stylesheet" href="styl.css">
-</head>
-<body>
+/* Wspólne dla bloku banera i stopki */
+header, footer {
+    background-color: Maroon;
+    text-align: center;
+    padding: 2px;
+}
 
-    <header>
-        <h1>Zwiedzamy Polskę</h1>
-    </header>
+/* Wspólne dla bloków lewego, środkowego i prawego */
+.lewy, .srodkowy, .prawy {
+    background-color: LightSalmon;
+    height: 527px;
+    float: left;
+}
 
-    <section class="lewy">
-        <button onclick="poprzednieZdjecie()">&lt;</button>
-    </section>
+/* Dodatkowo dla bloku lewego i prawego */
+.lewy, .prawy {
+    width: 15%;
+}
 
-    <section class="srodkowy">
-        <img id="aktywneZdjecie" src="1.jpg" alt="Aktywne zdjęcie">
-    </section>
+/* Dodatkowo dla bloku środkowego */
+.srodkowy {
+    width: 70%;
+}
 
-    <section class="prawy">
-        <button onclick="nastepneZdjecie()">&gt;</button>
-    </section>
+/* Dla bloku miniatur */
+.miniatury {
+    background-color: Maroon;
+    height: 70px;
+    clear: both;
+}
 
-    <section class="miniatury">
-        <img src="1.jpg" alt="Gdańsk" onclick="zmienZdjecie(1)">
-        <img src="2.jpg" alt="Kraków" onclick="zmienZdjecie(2)">
-        <img src="3.jpg" alt="Niedzica" onclick="zmienZdjecie(3)">
-        <img src="4.jpg" alt="Pieniny" onclick="zmienZdjecie(4)">
-        <img src="5.jpg" alt="Szklarska Poręba" onclick="zmienZdjecie(5)">
-        <img src="6.jpg" alt="Tatry" onclick="zmienZdjecie(6)">
-        <img src="7.jpg" alt="Wrocław" onclick="zmienZdjecie(7)">
-    </section>
+/* Dla obu przycisków */
+button {
+    background-color: LightSalmon;
+    color: Maroon;
+    border: none;
+    font-size: 400%;
+    display: block;
+    margin: auto;
+    padding-top: 210px;
+}
 
-    <footer>
-        <h3>Autorem galerii jest:</h3>
-        <p>00000000000</p> <!-- Zastąp swoim numerem zdającego -->
-        <p><a href="http://pixabay.com" target="_blank">Więcej zdjęć</a></p>
-    </footer>
+/* Dla obrazów miniatur */
+.miniatury img {
+    height: 70px;
+    animation-name: animacjaMiniatur;
+    animation-duration: 4s;
+}
 
-    <script>
-        // Zmienna przechowująca numer aktualnie wyświetlanego zdjęcia (od 1 do 7)
-        let numerAktualnegoZdjecia = 1;
+@keyframes animacjaMiniatur {
+    from { padding-left: 50px; }
+    to { padding-left: 0px; }
+}
 
-        function nastepneZdjecie() {
-            numerAktualnegoZdjecia++;
-            if (numerAktualnegoZdjecia > 7) {
-                numerAktualnegoZdjecia = 1;
-            }
-            document.getElementById('aktywneZdjecie').src = numerAktualnegoZdjecia + '.jpg';
-        }
+/* Dla obrazu z bloku środkowego */
+#aktywneZdjecie {
+    display: block;
+    margin: auto;
+    padding-top: 45px;
+    transition: transform 5s;
+    transform: scale(100%);
+}
 
-        function poprzednieZdjecie() {
-            numerAktualnegoZdjecia--;
-            if (numerAktualnegoZdjecia < 1) {
-                numerAktualnegoZdjecia = 7;
-            }
-            document.getElementById('aktywneZdjecie').src = numerAktualnegoZdjecia + '.jpg';
-        }
-
-        function zmienZdjecie(numer) {
-            numerAktualnegoZdjecia = numer;
-            document.getElementById('aktywneZdjecie').src = numerAktualnegoZdjecia + '.jpg';
-        }
-    </script>
-
-</body>
-</html>
+/* Gdy kursor znajduje się na obrazie z bloku środkowego */
+#aktywneZdjecie:hover {
+    transform: scale(120%);
+}
