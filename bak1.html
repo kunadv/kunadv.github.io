@@ -3,94 +3,68 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Konfigurator samochodów</title>
+    <title>Biuro turystyczne</title>
     <link rel="stylesheet" href="styl.css">
 </head>
 <body>
 
-    <!-- Blok nagłówkowy -->
     <header>
-        <h1>Serwis konfiguracji samochodów</h1>
+        <h1>Zwiedzamy Polskę</h1>
     </header>
 
-    <!-- Blok nawigacyjny -->
-    <nav>
-        <h2>Samochody</h2>
-        <h2>Konfigurator</h2>
-        <h2>Kontakt</h2>
-    </nav>
+    <section class="lewy">
+        <button onclick="poprzednieZdjecie()">&lt;</button>
+    </section>
 
-    <!-- Blok główny -->
-    <main>
-        <!-- Sekcja lewa -->
-        <section>
-            <table class="lewa-tabela">
-                <?php
-                    $polaczenie = mysqli_connect('localhost', 'root', '', 'samochody');
-                    $zapytanie3 = "SELECT pojazdy.marka, pojazdy.model, kolory.nazwa, pojazdy.cena, kolory.doplata FROM pojazdy JOIN kolory ON pojazdy.kolor = kolory.id WHERE pojazdy.model = 'alfa'";
-                    $wynik3 = mysqli_query($polaczenie, $zapytanie3);
+    <section class="srodkowy">
+        <img id="aktywneZdjecie" src="1.jpg" alt="Aktywne zdjęcie">
+    </section>
 
-                    while ($wiersz = mysqli_fetch_row($wynik3)) {
-                        $cenaCalkowita = $wiersz[3] + $wiersz[4];
-                        echo "<tr>";
-                        echo "<td>$wiersz[0]</td>";
-                        echo "<td>$wiersz[1]</td>";
-                        echo "<td>$wiersz[2]</td>";
-                        echo "<td>$cenaCalkowita</td>";
-                        echo "</tr>";
-                    }
-                ?>
-            </table>
-        </section>
+    <section class="prawy">
+        <button onclick="nastepneZdjecie()">&gt;</button>
+    </section>
 
-        <!-- Sekcja środkowa -->
-        <section>
-            <table>
-                <tr>
-                    <th>Konfiguracja</th>
-                    <th>Cena</th>
-                </tr>
-                <tr>
-                    <td colspan="2"><img src="a1.jpg" alt="Konfiguracja 1"></td>
-                </tr>
-                <?php
-                    $zapytanie4 = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
-                    $wynik4_1 = mysqli_query($polaczenie, $zapytanie4);
-                    $wiersz4_1 = mysqli_fetch_row($wynik4_1);
-                    
-                    // Wiersz 3 i 4 dla pierwszego wylosowanego rekordu
-                    echo "<tr><td>Marka</td><td>$wiersz4_1[0]</td>< rowspan='2'>$wiersz4_1[2]</td></tr>"; // Uwaga: dostosuj strukturę komórek zgodnie z układem tabeli w zadaniu
-                ?>
-                <!-- Skrypt 2 ciąg dalszy (wiersze 3-7 według wytycznych i struktury z obrazu) -->
-                <?php
-                    // Alternatywne, uproszczone wypisanie wierszy zgodnie z widokiem (rys. 2):
-                    // Wiersz 3: Marka | BM | 94000 (cena scalona / obok)
-                    // Poniżej uproszczony blok dla skryptu 2 (wiersze 3-4 oraz 6-7):
-                    $wiersz4_2 = mysqli_fetch_row($wynik4_1); // lub druggo zapytania
-                ?>
-                <tr>
-                    <td colspan="2"><img src="a2.jpg" alt="Konfiguracja 2"></td>
-                </tr>
-                <!-- Kolejne wiersze generowane dynamicznie dla drugiego rekordu -->
-            </table>
-        </section>
+    <section class="miniatury">
+        <img src="1.jpg" alt="Gdańsk" onclick="zmienZdjecie(1)">
+        <img src="2.jpg" alt="Kraków" onclick="zmienZdjecie(2)">
+        <img src="3.jpg" alt="Niedzica" onclick="zmienZdjecie(3)">
+        <img src="4.jpg" alt="Pieniny" onclick="zmienZdjecie(4)">
+        <img src="5.jpg" alt="Szklarska Poręba" onclick="zmienZdjecie(5)">
+        <img src="6.jpg" alt="Tatry" onclick="zmienZdjecie(6)">
+        <img src="7.jpg" alt="Wrocław" onclick="zmienZdjecie(7)">
+    </section>
 
-        <!-- Sekcja prawa -->
-        <section>
-            <h3>111 222 444</h3>
-            <img src="a3.png" alt="Samochód">
-        </section>
-    </main>
-
-    <!-- Blok stopki -->
     <footer>
-        <p>Stronę wykonał: 
-            <?php
-                echo "00000000000"; // Tutaj należy wstawić swój numer zdającego (PESEL)
-                mysqli_close($polaczenie);
-            ?>
-        </p>
+        <h3>Autorem galerii jest:</h3>
+        <p>00000000000</p> <!-- Zastąp swoim numerem zdającego -->
+        <p><a href="http://pixabay.com" target="_blank">Więcej zdjęć</a></p>
     </footer>
+
+    <script>
+        // Zmienna przechowująca numer aktualnie wyświetlanego zdjęcia (od 1 do 7)
+        let numerAktualnegoZdjecia = 1;
+
+        function nastepneZdjecie() {
+            numerAktualnegoZdjecia++;
+            if (numerAktualnegoZdjecia > 7) {
+                numerAktualnegoZdjecia = 1;
+            }
+            document.getElementById('aktywneZdjecie').src = numerAktualnegoZdjecia + '.jpg';
+        }
+
+        function poprzednieZdjecie() {
+            numerAktualnegoZdjecia--;
+            if (numerAktualnegoZdjecia < 1) {
+                numerAktualnegoZdjecia = 7;
+            }
+            document.getElementById('aktywneZdjecie').src = numerAktualnegoZdjecia + '.jpg';
+        }
+
+        function zmienZdjecie(numer) {
+            numerAktualnegoZdjecia = numer;
+            document.getElementById('aktywneZdjecie').src = numerAktualnegoZdjecia + '.jpg';
+        }
+    </script>
 
 </body>
 </html>
