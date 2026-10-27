@@ -1,95 +1,83 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Konfigurator samochodów</title>
+    <title>ZGŁOSZENIA</title>
     <link rel="stylesheet" href="styl.css">
 </head>
 <body>
-
-    <!-- Blok nagłówkowy -->
     <header>
-        <h1>Serwis konfiguracji samochodów</h1>
+        <h1>Zgłoszenia wydarzeń</h1>
     </header>
 
-    <!-- Blok nawigacyjny -->
-    <nav>
-        <h2>Samochody</h2>
-        <h2>Konfigurator</h2>
-        <h2>Kontakt</h2>
-    </nav>
-
-    <!-- Blok główny -->
     <main>
-        <!-- Sekcja lewa -->
         <section>
-            <table class="lewa-tabela">
-                <?php
-                    $polaczenie = mysqli_connect('localhost', 'root', '', 'samochody');
-                    $zapytanie3 = "SELECT pojazdy.marka, pojazdy.model, kolory.nazwa, pojazdy.cena, kolory.doplata FROM pojazdy JOIN kolory ON pojazdy.kolor = kolory.id WHERE pojazdy.model = 'alfa'";
-                    $wynik3 = mysqli_query($polaczenie, $zapytanie3);
+            <h2>Personel</h2>
+            <form action="index.php" method="POST">
+                <input type="radio" name="opcja" value="policjant" checked> Policjant
+                <input type="radio" name="opcja" value="ratownik"> Ratownik
+                <button type="submit">Pokaż</button>
+            </form>
 
-                    while ($wiersz = mysqli_fetch_row($wynik3)) {
-                        $cenaCalkowita = $wiersz[3] + $wiersz[4];
-                        echo "<tr>";
-                        echo "<td>$wiersz[0]</td>";
-                        echo "<td>$wiersz[1]</td>";
-                        echo "<td>$wiersz[2]</td>";
-                        echo "<td>$cenaCalkowita</td>";
-                        echo "</tr>";
-                    }
-                ?>
-            </table>
+            <?php
+            // Skrypt 1
+            $db = mysqli_connect('localhost', 'root', '', 'zgloszenia');
+
+            $wybranaOpcja = 'policjant';
+            if (isset($_POST['opcja'])) {
+                $wybranaOpcja = $_POST['opcja'];
+            }
+
+            echo "<h3>Wybrano opcję: $wybranaOpcja</h3>";
+
+            $zapytanie1 = "SELECT id, imie, nazwisko FROM personel WHERE status = '$wybranaOpcja'";
+            $wynik1 = mysqli_query($db, $zapytanie1);
+
+            echo "<table>";
+            echo "<tr><th>Id</th><th>Imię</th><th>Nazwisko</th></tr>";
+            while ($row = mysqli_fetch_row($wynik1)) {
+                echo "<tr><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td></tr>";
+            }
+            echo "</table>";
+            ?>
         </section>
 
-        <!-- Sekcja środkowa -->
         <section>
-            <table>
-                <tr>
-                    <th>Konfiguracja</th>
-                    <th>Cena</th>
-                </tr>
-                <tr>
-                    <td colspan="2"><img src="a1.jpg" alt="Konfiguracja 1"></td>
-                </tr>
+            <h2>Nowe zgłoszenie</h2>
+            <ol>
                 <?php
-                    $zapytanie4 = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
-                    $wynik4_1 = mysqli_query($polaczenie, $zapytanie4);
-                    $wiersz4_1 = mysqli_fetch_row($wynik4_1);
-                    
-                    // Wiersz 3 i 4 dla pierwszego wylosowanego rekordu
-                    echo "<tr><td>Marka</td><td>$wiersz4_1[0]</td>< rowspan='2'>$wiersz4_1[2]</td></tr>"; // Uwaga: dostosuj strukturę komórek zgodnie z układem tabeli w zadaniu
-                ?>
-                <!-- Skrypt 2 ciąg dalszy (wiersze 3-7 według wytycznych i struktury z obrazu) -->
-                <?php
-                    // Alternatywne, uproszczone wypisanie wierszy zgodnie z widokiem (rys. 2):
-                    // Wiersz 3: Marka | BM | 94000 (cena scalona / obok)
-                    // Poniżej uproszczony blok dla skryptu 2 (wiersze 3-4 oraz 6-7):
-                    $wiersz4_2 = mysqli_fetch_row($wynik4_1); // lub druggo zapytania
-                ?>
-                <tr>
-                    <td colspan="2"><img src="a2.jpg" alt="Konfiguracja 2"></td>
-                </tr>
-                <!-- Kolejne wiersze generowane dynamicznie dla drugiego rekordu -->
-            </table>
-        </section>
+                // Skrypt 2
+                $zapytanie3 = "SELECT id, nazwisko FROM personel WHERE id NOT IN (SELECT id_personel FROM rejestr)";
+                $wynik3 = mysqli_query($db, $zapytanie3);
 
-        <!-- Sekcja prawa -->
-        <section>
-            <h3>111 222 444</h3>
-            <img src="a3.png" alt="Samochód">
+                while ($row3 = mysqli_fetch_row($wynik3)) {
+                    echo "<li>$row3[0] $row3[1]</li>";
+                }
+                ?>
+            </ol>
+
+            <form action="index.php" method="POST">
+                <label for="id_osoby">Wybierz id osoby z listy: </label>
+                <input type="number" name="id_osoby" id="id_osoby">
+                <input type="submit" value="Dodaj zgłoszenie">
+            </form>
+
+            <?php
+            // Skrypt 3
+            if (isset($_POST['id_osoby']) && !empty($_POST['id_osoby'])) {
+                $idOsoby = $_POST['id_osoby'];
+                $zapytanie4 = "INSERT INTO rejestr (id, data, id_personel, id_pojazd) VALUES (NULL, CURRENT_DATE(), $idOsoby, 14)";
+                mysqli_query($db, $zapytanie4);
+            }
+
+            // Zamknięcie połączenia z bazą na końcu (wymóg arkusza)
+            mysqli_close($db);
+            ?>
         </section>
     </main>
 
-    <!-- Blok stopki -->
     <footer>
-        <p>Stronę wykonał: 
-            <?php
-                echo "00000000000"; // Tutaj należy wstawić swój numer zdającego (PESEL)
-                mysqli_close($polaczenie);
-            ?>
-        </p>
+        <p>Stronę wykonał: 00000000000</p> <!-- Zastąp swoim numerem zdającego (PESEL) -->
     </footer>
-
 </body>
 </html>
