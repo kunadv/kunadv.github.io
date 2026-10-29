@@ -2,82 +2,89 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>ZGŁOSZENIA</title>
+    <title>Wykaz chorób</title>
     <link rel="stylesheet" href="styl.css">
 </head>
 <body>
+
+    <!-- Blok nagłówkowy -->
     <header>
-        <h1>Zgłoszenia wydarzeń</h1>
+        <h1>Informacja o chorobach w Polsce</h1>
     </header>
 
+    <!-- Blok nawigacyjny -->
+    <nav>
+        <a href="https://szpitale.pl/" target="_blank">Szpitale</a>
+        <a href="https://www.przychodnie.pl/" target="_blank">Przychodnie</a>
+        <a href="https://www.nfz.gov.pl/" target="_blank">NFZ</a>
+    </nav>
+
+    <!-- Blok główny -->
     <main>
+        <!-- Blok sekcji lewej -->
         <section>
-            <h2>Personel</h2>
-            <form action="index.php" method="POST">
-                <input type="radio" name="opcja" value="policjant" checked> Policjant
-                <input type="radio" name="opcja" value="ratownik"> Ratownik
-                <button type="submit">Pokaż</button>
-            </form>
-
-            <?php
-            // Skrypt 1
-            $db = mysqli_connect('localhost', 'root', '', 'zgloszenia');
-
-            $wybranaOpcja = 'policjant';
-            if (isset($_POST['opcja'])) {
-                $wybranaOpcja = $_POST['opcja'];
-            }
-
-            echo "<h3>Wybrano opcję: $wybranaOpcja</h3>";
-
-            $zapytanie1 = "SELECT id, imie, nazwisko FROM personel WHERE status = '$wybranaOpcja'";
-            $wynik1 = mysqli_query($db, $zapytanie1);
-
-            echo "<table>";
-            echo "<tr><th>Id</th><th>Imię</th><th>Nazwisko</th></tr>";
-            while ($row = mysqli_fetch_row($wynik1)) {
-                echo "<tr><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td></tr>";
-            }
-            echo "</table>";
-            ?>
-        </section>
-
-        <section>
-            <h2>Nowe zgłoszenie</h2>
+            <h2>Choroby zakaźne</h2>
             <ol>
                 <?php
-                // Skrypt 2
-                $zapytanie3 = "SELECT id, nazwisko FROM personel WHERE id NOT IN (SELECT id_personel FROM rejestr)";
-                $wynik3 = mysqli_query($db, $zapytanie3);
-
-                while ($row3 = mysqli_fetch_row($wynik3)) {
-                    echo "<li>$row3[0] $row3[1]</li>";
+                // Skrypt 1
+                $polaczenie = mysqli_connect('localhost', 'root', '', 'choroby');
+                $zapytanie1 = "SELECT nazwa FROM choroby WHERE zakazna = 'T' ORDER BY nazwa ASC;";
+                $wynik1 = mysqli_query($polaczenie, $zapytanie1);
+                while ($rekord = mysqli_fetch_row($wynik1)) {
+                    echo "<li>$rekord[0]</li>";
                 }
+                mysqli_close($polaczenie);
                 ?>
             </ol>
+        </section>
 
-            <form action="index.php" method="POST">
-                <label for="id_osoby">Wybierz id osoby z listy: </label>
-                <input type="number" name="id_osoby" id="id_osoby">
-                <input type="submit" value="Dodaj zgłoszenie">
+        <!-- Blok sekcji prawej -->
+        <section>
+            <h2>Objawy chorób</h2>
+            <form action="zdrowie.php" method="POST">
+                <select name="wybrana_choroba">
+                    <?php
+                    // Skrypt 2
+                    $polaczenie = mysqli_connect('localhost', 'root', '', 'choroby');
+                    $zapytanie2 = "SELECT id, nazwa FROM choroby;";
+                    $wynik2 = mysqli_query($polaczenie, $zapytanie2);
+                    while ($rekord = mysqli_fetch_array($wynik2)) {
+                        echo "<option value='$rekord[0]'>$rekord[1]</option>";
+                    }
+                    mysqli_close($polaczenie);
+                    ?>
+                </select>
+                <button type="submit">Sprawdź</button>
             </form>
 
-            <?php
-            // Skrypt 3
-            if (isset($_POST['id_osoby']) && !empty($_POST['id_osoby'])) {
-                $idOsoby = $_POST['id_osoby'];
-                $zapytanie4 = "INSERT INTO rejestr (id, data, id_personel, id_pojazd) VALUES (NULL, CURRENT_DATE(), $idOsoby, 14)";
-                mysqli_query($db, $zapytanie4);
-            }
-
-            // Zamknięcie połączenia z bazą na końcu (wymóg arkusza)
-            mysqli_close($db);
-            ?>
+            <div>
+                <?php
+                // Skrypt 3
+                if (isset($_POST['wybrana_choroba'])) {
+                    $idChoroby = $_POST['wybrana_choroba'];
+                    $polaczenie = mysqli_connect('localhost', 'root', '', 'choroby');
+                    
+                    $zapytanie3 = "SELECT objawy.nazwa FROM objawy JOIN choroby_objawy ON objawy.id = choroby_objawy.id_objawy WHERE choroby_objawy.id_choroby = $idChoroby;";
+                    $wynik3 = mysqli_query($polaczenie, $zapytanie3);
+                    
+                    while ($rekord = mysqli_fetch_row($wynik3)) {
+                        echo "<span> $rekord[0] </span>";
+                    }
+                    
+                    mysqli_close($polaczenie);
+                }
+                ?>
+            </div>
         </section>
     </main>
 
+    <!-- Blok stopki -->
     <footer>
-        <p>Stronę wykonał: 00000000000</p> <!-- Zastąp swoim numerem zdającego (PESEL) -->
+        <p>Stronę opracował: 12345678901</p> <!-- Wpisz swój numer zdającego (PESEL) -->
     </footer>
+
+    <!-- Obraz poza blokami -->
+    <img src="zdrowia.png" alt="Życzymy zdrowia!">
+
 </body>
 </html>
