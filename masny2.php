@@ -1,90 +1,111 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Wykaz chorób</title>
+    <title>Wodospady</title>
     <link rel="stylesheet" href="styl.css">
 </head>
 <body>
 
-    <!-- Blok nagłówkowy -->
     <header>
-        <h1>Informacja o chorobach w Polsce</h1>
+        <h2>Łowcy wodospadów</h2>
     </header>
 
-    <!-- Blok nawigacyjny -->
-    <nav>
-        <a href="https://szpitale.pl/" target="_blank">Szpitale</a>
-        <a href="https://www.przychodnie.pl/" target="_blank">Przychodnie</a>
-        <a href="https://www.nfz.gov.pl/" target="_blank">NFZ</a>
-    </nav>
-
-    <!-- Blok główny -->
     <main>
-        <!-- Blok sekcji lewej -->
+        <aside>
+            <!-- Skrypt 1 -->
+            <?php
+            $polaczenie = mysqli_connect('localhost', 'root', '', 'wodospady');
+            $zapytanie1 = "SELECT idKontynent, nazwa FROM kontynenty;";
+            $wynik1 = mysqli_query($polaczenie, $zapytanie1);
+
+            while ($wiersz = mysqli_fetch_array($wynik1)) {
+                echo "<a href='index.php?id=" . $wiersz['idKontynent'] . "'>" . $wiersz['nazwa'] . "</a>";
+            }
+            mysqli_close($polaczenie);
+            ?>
+        </aside>
+
         <section>
-            <h2>Choroby zakaźne</h2>
-            <ol>
+            <!-- Skrypt 4 - Obsługa formularza (wstawianie osiągnięcia) -->
+            <?php
+            if (isset($_POST['idObiekt']) && isset($_POST['idTurysta'])) {
+                $idObiekt = $_POST['idObiekt'];
+                $idTurysta = $_POST['idTurysta'];
+
+                $polaczenie = mysqli_connect('localhost', 'root', '', 'wodospady');
+                $zapytanie4 = "INSERT INTO osiagniecia (idObiekt, idTurysta) VALUES ($idObiekt, $idTurysta);";
+                mysqli_query($polaczenie, $zapytanie4);
+                mysqli_close($polaczenie);
+            }
+            ?>
+
+            <!-- Skrypt 2 -->
+            <table>
+                <tr>
+                    <th>Identyfikator</th>
+                    <th>Państwo</th>
+                    <th>Nazwa wodospadu</th>
+                    <th>Wysokość</th>
+                </tr>
                 <?php
-                // Skrypt 1
-                $polaczenie = mysqli_connect('localhost', 'root', '', 'choroby');
-                $zapytanie1 = "SELECT nazwa FROM choroby WHERE zakazna = 'T' ORDER BY nazwa ASC;";
-                $wynik1 = mysqli_query($polaczenie, $zapytanie1);
-                while ($rekord = mysqli_fetch_row($wynik1)) {
-                    echo "<li>$rekord[0]</li>";
+                $kontynent = 6;
+                if (isset($_GET['id'])) {
+                    $kontynent = $_GET['id'];
+                }
+
+                $polaczenie = mysqli_connect('localhost', 'root', '', 'wodospady');
+                $zapytanie3 = "SELECT idObiekt, panstwo, nazwa, wartoscCechy FROM obiekty WHERE idRodzaj = 10 AND idKontynent = $kontynent;";
+                $wynik3 = mysqli_query($polaczenie, $zapytanie3);
+
+                while ($wiersz = mysqli_fetch_row($wynik3)) {
+                    echo "<tr>";
+                    echo "<td>" . $wiersz[0] . "</td>";
+                    echo "<td>" . $wiersz[1] . "</td>";
+                    echo "<td>" . $wiersz[2] . "</td>";
+                    echo "<td>" . $wiersz[3] . "</td>";
+                    echo "</tr>";
                 }
                 mysqli_close($polaczenie);
                 ?>
-            </ol>
-        </section>
+            </table>
 
-        <!-- Blok sekcji prawej -->
-        <section>
-            <h2>Objawy chorób</h2>
-            <form action="zdrowie.php" method="POST">
-                <select name="wybrana_choroba">
+            <h4>Wpisz osiągnięcie do bazy</h4>
+            <form action="index.php" method="POST">
+                <label for="idObiekt">identyfikator wodospadu</label>
+                <input type="number" name="idObiekt" id="idObiekt">
+                
+                <label for="idTurysta">turysta</label>
+                <select name="idTurysta" id="idTurysta">
+                    <!-- Skrypt 3 -->
                     <?php
-                    // Skrypt 2
-                    $polaczenie = mysqli_connect('localhost', 'root', '', 'choroby');
-                    $zapytanie2 = "SELECT id, nazwa FROM choroby;";
-                    $wynik2 = mysqli_query($polaczenie, $zapytanie2);
-                    while ($rekord = mysqli_fetch_array($wynik2)) {
-                        echo "<option value='$rekord[0]'>$rekord[1]</option>";
+                    $polaczenie = mysqli_connect('localhost', 'root', '', 'wodospady');
+                    $zapytanie5 = "SELECT idTurysta, nick FROM turysci;";
+                    $wynik5 = mysqli_query($polaczenie, $zapytanie5);
+
+                    while ($wiersz = mysqli_fetch_array($wynik5)) {
+                        echo "<option value='" . $wiersz['idTurysta'] . "'>" . $wiersz['nick'] . "</option>";
                     }
                     mysqli_close($polaczenie);
                     ?>
                 </select>
-                <button type="submit">Sprawdź</button>
-            </form>
 
-            <div>
-                <?php
-                // Skrypt 3
-                if (isset($_POST['wybrana_choroba'])) {
-                    $idChoroby = $_POST['wybrana_choroba'];
-                    $polaczenie = mysqli_connect('localhost', 'root', '', 'choroby');
-                    
-                    $zapytanie3 = "SELECT objawy.nazwa FROM objawy JOIN choroby_objawy ON objawy.id = choroby_objawy.id_objawy WHERE choroby_objawy.id_choroby = $idChoroby;";
-                    $wynik3 = mysqli_query($polaczenie, $zapytanie3);
-                    
-                    while ($rekord = mysqli_fetch_row($wynik3)) {
-                        echo "<span> $rekord[0] </span>";
-                    }
-                    
-                    mysqli_close($polaczenie);
-                }
-                ?>
-            </div>
+                <button type="submit">Wpisz</button>
+            </form>
         </section>
     </main>
 
-    <!-- Blok stopki -->
-    <footer>
-        <p>Stronę opracował: 12345678901</p> <!-- Wpisz swój numer zdającego (PESEL) -->
-    </footer>
+    <article>
+        <h3>Wodospady w Polsce</h3>
+        <img src="kamienczyk.jpg" alt="wodospad">
+        <img src="siklawica.jpg" alt="wodospad">
+        <img src="siklawa.jpg" alt="wodospad">
+        <img src="wilczki.jpg" alt="wodospad">
+    </article>
 
-    <!-- Obraz poza blokami -->
-    <img src="zdrowia.png" alt="Życzymy zdrowia!">
+    <footer>
+        <p>Autor: 00000000000</p> <!-- Zastąp swoim numerem zdającego (PESEL) -->
+    </footer>
 
 </body>
 </html>
