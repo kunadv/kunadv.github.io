@@ -1,73 +1,64 @@
-/* Domyślne formatowanie wszystkich selektorów */
+/* Domyślne ustawienia dla wszystkich selektorów */
 * {
-    font-family: Georgia;
-    color: white;
-}
-
-/* Wspólne dla bloku banera i stopki */
-header, footer {
-    background-color: Maroon;
+    font-family: Garamond, serif;
     text-align: center;
-    padding: 2px;
 }
 
-/* Wspólne dla bloków lewego, środkowego i prawego */
-.lewy, .srodkowy, .prawy {
-    background-color: LightSalmon;
-    height: 527px;
-    float: left;
+/* Blok nagłówkowy i stopka */
+header, footer {
+    background-color: SkyBlue;
+    padding: 8px;
+    margin: 10px;
+    border-radius: 20px;
 }
 
-/* Dodatkowo dla bloku lewego i prawego */
-.lewy, .prawy {
-    width: 15%;
+/* Blok boczny */
+aside {
+    width: 30%;
 }
 
-/* Dodatkowo dla bloku środkowego */
-.srodkowy {
+/* Blok sekcji */
+section {
     width: 70%;
+    height: 300px;
+    overflow: auto;
 }
 
-/* Dla bloku miniatur */
-.miniatury {
-    background-color: Maroon;
-    height: 70px;
-    clear: both;
+/* Blok artykułu */
+article {
+    background-color: AliceBlue;
+    height: 280px;
+    padding: 8px;
+    margin: 10px;
+    border-radius: 20px;
 }
 
-/* Dla obu przycisków */
-button {
-    background-color: LightSalmon;
-    color: Maroon;
-    border: none;
-    font-size: 400%;
+/* Styl selektora obrazu ( wyłącznie selektor znacznika ) */
+img {
+    margin: 4px;
+    float: left; /* lub display: inline-block z ustawioną szerokością wg wymagań grafiki */
+}
+
+/* Styl selektora tabeli ( wyłącznie selektor znacznika ) */
+table {
+    width: 90%;
+    border: 1px dotted black;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+/* Styl selektora odnośnika ( wyłącznie selektor znacznika ) */
+a {
     display: block;
-    margin: auto;
-    padding-top: 210px;
+    background-color: DodgerBlue;
+    color: white;
+    width: 65%;
+    font-size: 130%;
+    margin: 10px auto;
+    text-decoration: none;
 }
 
-/* Dla obrazów miniatur */
-.miniatury img {
-    height: 70px;
-    animation-name: animacjaMiniatur;
-    animation-duration: 4s;
-}
-
-@keyframes animacjaMiniatur {
-    from { padding-left: 50px; }
-    to { padding-left: 0px; }
-}
-
-/* Dla obrazu z bloku środkowego */
-#aktywneZdjecie {
-    display: block;
-    margin: auto;
-    padding-top: 45px;
-    transition: transform 5s;
-    transform: scale(100%);
-}
-
-/* Gdy kursor znajduje się na obrazie z bloku środkowego */
-#aktywneZdjecie:hover {
-    transform: scale(120%);
+/* Zmiana tła odnośnika po najechaniu kursorem */
+a:hover {
+    background-color: RoyalBlue;
 }
