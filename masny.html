@@ -1,95 +1,65 @@
-!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Konfigurator samochodów</title>
-    <link rel="stylesheet" href="styl.css">
-</head>
-<body>
+* {
+    font-family: Georgia;
+}
 
-    <!-- Blok nagłówkowy -->
-    <header>
-        <h1>Serwis konfiguracji samochodów</h1>
-    </header>
+body {
+    background-color: MistyRose;
+}
 
-    <!-- Blok nawigacyjny -->
-    <nav>
-        <h2>Samochody</h2>
-        <h2>Konfigurator</h2>
-        <h2>Kontakt</h2>
-    </nav>
+header, footer {
+    text-align: center;
+}
 
-    <!-- Blok główny -->
-    <main>
-        <!-- Sekcja lewa -->
-        <section>
-            <table class="lewa-tabela">
-                <?php
-                    $polaczenie = mysqli_connect('localhost', 'root', '', 'samochody');
-                    $zapytanie3 = "SELECT pojazdy.marka, pojazdy.model, kolory.nazwa, pojazdy.cena, kolory.doplata FROM pojazdy JOIN kolory ON pojazdy.kolor = kolory.id WHERE pojazdy.model = 'alfa'";
-                    $wynik3 = mysqli_query($polaczenie, $zapytanie3);
+section {
+    width: 70%;
+    height: 700 px;
+    overflow: scroll;
+    float: left; /* lub odpowiedni układ blokowy zgodny z flexbox/float */
+}
 
-                    while ($wiersz = mysqli_fetch_row($wynik3)) {
-                        $cenaCalkowita = $wiersz[3] + $wiersz[4];
-                        echo "<tr>";
-                        echo "<td>$wiersz[0]</td>";
-                        echo "<td>$wiersz[1]</td>";
-                        echo "<td>$wiersz[2]</td>";
-                        echo "<td>$cenaCalkowita</td>";
-                        echo "</tr>";
-                    }
-                ?>
-            </table>
-        </section>
+aside {
+    width: 30%;
+    float: left;
+}
 
-        <!-- Sekcja środkowa -->
-        <section>
-            <table>
-                <tr>
-                    <th>Konfiguracja</th>
-                    <th>Cena</th>
-                </tr>
-                <tr>
-                    <td colspan="2"><img src="a1.jpg" alt="Konfiguracja 1"></td>
-                </tr>
-                <?php
-                    $zapytanie4 = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
-                    $wynik4_1 = mysqli_query($polaczenie, $zapytanie4);
-                    $wiersz4_1 = mysqli_fetch_row($wynik4_1);
-                    
-                    // Wiersz 3 i 4 dla pierwszego wylosowanego rekordu
-                    echo "<tr><td>Marka</td><td>$wiersz4_1[0]</td>< rowspan='2'>$wiersz4_1[2]</td></tr>"; // Uwaga: dostosuj strukturę komórek zgodnie z układem tabeli w zadaniu
-                ?>
-                <!-- Skrypt 2 ciąg dalszy (wiersze 3-7 według wytycznych i struktury z obrazu) -->
-                <?php
-                    // Alternatywne, uproszczone wypisanie wierszy zgodnie z widokiem (rys. 2):
-                    // Wiersz 3: Marka | BM | 94000 (cena scalona / obok)
-                    // Poniżej uproszczony blok dla skryptu 2 (wiersze 3-4 oraz 6-7):
-                    $wiersz4_2 = mysqli_fetch_row($wynik4_1); // lub druggo zapytania
-                ?>
-                <tr>
-                    <td colspan="2"><img src="a2.jpg" alt="Konfiguracja 2"></td>
-                </tr>
-                <!-- Kolejne wiersze generowane dynamicznie dla drugiego rekordu -->
-            </table>
-        </section>
+img {
+    width: 90%;
+    text-align: center;
+}
 
-        <!-- Sekcja prawa -->
-        <section>
-            <h3>111 222 444</h3>
-            <img src="a3.png" alt="Samochód">
-        </section>
-    </main>
+.mebel {
+    margin: 5px;
+    padding: 10px;
+    background-color: LightCoral;
+    border-radius: 20px;
+}
 
-    <!-- Blok stopki -->
-    <footer>
-        <p>Stronę wykonał: 
-            <?php
-                echo "00000000000"; // Tutaj należy wstawić swój numer zdającego (PESEL)
-                mysqli_close($polaczenie);
-            ?>
-        </p>
-    </footer>
+.mebel:hover {
+    background-color: Coral;
+}
 
-</body>
-</html>
+.obraz {
+    width: 30%;
+    float: right; /* Zgodnie z treścią zadania: opływanie z prawej strony */
+}
+
+.opis {
+    clear: both;
+    width: 100%;
+}
+
+button {
+    margin-left: 30px;
+    padding: 20px;
+    background-color: LightCoral;
+    border: 2px dotted Maroon;
+    border-radius: 10px;
+}
+
+h2, h4 {
+    font-style: italic;
+}
+
+h2 {
+    text-align: center;
+}
