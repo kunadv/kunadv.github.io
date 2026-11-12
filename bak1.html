@@ -1,64 +1,115 @@
-/* Domyślne ustawienia dla wszystkich selektorów */
-* {
-    font-family: Garamond, serif;
-    text-align: center;
-}
+<?php
+// Połączenie z bazą danych
+$polaczenie = mysqli_connect('localhost', 'root', '', 'antyki');
 
-/* Blok nagłówkowy i stopka */
-header, footer {
-    background-color: SkyBlue;
-    padding: 8px;
-    margin: 10px;
-    border-radius: 20px;
+// Obsługa formularza (Skrypt 2) - dodanie zakupu po kliknięciu "KUP"
+if (isset($_POST['idMeble'])) {
+    $idMebla = $_POST['idMeble'];
+    $zapytanieZakup = "INSERT INTO zakupy (idKlienci, idMeble, sztuk) VALUES (1, $idMebla, 1)";
+    mysqli_query($polaczenie, $zapytanieZakup);
 }
+?>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Sprzedaż antyków</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h1>Najlepsze antyki w mieście</h1>
+    </header>
 
-/* Blok boczny */
-aside {
-    width: 30%;
-}
+    <main>
+        <section>
+            <h2>- Sofy -</h2>
+            <?php
+            // Skrypt 1a - kategoria 1 (sofy)
+            $wynik1 = mysqli_query($polaczenie, "SELECT idMeble, nazwa, plik, styl, cena, opis FROM meble WHERE kategoria = 1");
+            while($wiersz = mysqli_fetch_array($wynik1)) {
+                echo '<div class="mebel">';
+                echo '<div class="obraz"><img src="sofy/'.$wiersz['plik'].'" alt="mebel"></div>';
+                echo '<div class="informacje">';
+                echo '<h3>'.$wiersz['nazwa'].'</h3>';
+                echo '<h4>styl '.$wiersz['styl'].'</h4>';
+                echo '<h3>CENA: '.$wiersz['cena'].' zł</h3>';
+                echo '<form method="post">';
+                echo '<button name="idMeble" value="'.$wiersz['idMeble'].'">KUP</button>';
+                echo '</form>';
+                echo '</div>';
+                echo '<div class="opis">'.$wiersz['opis'].'</div>';
+                echo '</div>';
+            }
+            ?>
 
-/* Blok sekcji */
-section {
-    width: 70%;
-    height: 300px;
-    overflow: auto;
-}
+            <h2>- Fotele -</h2>
+            <?php
+            // Skrypt 1b - kategoria 2 (fotele)
+            $wynik2 = mysqli_query($polaczenie, "SELECT idMeble, nazwa, plik, styl, cena, opis FROM meble WHERE kategoria = 2");
+            while($wiersz = mysqli_fetch_array($wynik2)) {
+                echo '<div class="mebel">';
+                echo '<div class="obraz"><img src="fotele/'.$wiersz['plik'].'" alt="mebel"></div>';
+                echo '<div class="informacje">';
+                echo '<h3>'.$wiersz['nazwa'].'</h3>';
+                echo '<h4>styl '.$wiersz['styl'].'</h4>';
+                echo '<h3>CENA: '.$wiersz['cena'].' zł</h3>';
+                echo '<form method="post">';
+                echo '<button name="idMeble" value="'.$wiersz['idMeble'].'">KUP</button>';
+                echo '</form>';
+                echo '</div>';
+                echo '<div class="opis">'.$wiersz['opis'].'</div>';
+                echo '</div>';
+            }
+            ?>
 
-/* Blok artykułu */
-article {
-    background-color: AliceBlue;
-    height: 280px;
-    padding: 8px;
-    margin: 10px;
-    border-radius: 20px;
-}
+            <h2>- Komody -</h2>
+            <?php
+            // Skrypt 1c - kategoria 3 (komody)
+            $wynik3 = mysqli_query($polaczenie, "SELECT idMeble, nazwa, plik, styl, cena, opis FROM meble WHERE kategoria = 3");
+            while($wiersz = mysqli_fetch_array($wynik3)) {
+                echo '<div class="mebel">';
+                echo '<div class="obraz"><img src="komody/'.$wiersz['plik'].'" alt="mebel"></div>';
+                echo '<div class="informacje">';
+                echo '<h3>'.$wiersz['nazwa'].'</h3>';
+                echo '<h4>styl '.$wiersz['styl'].'</h4>';
+                echo '<h3>CENA: '.$wiersz['cena'].' zł</h3>';
+                echo '<form method="post">';
+                echo '<button name="idMeble" value="'.$wiersz['idMeble'].'">KUP</button>';
+                echo '</form>';
+                echo '</div>';
+                echo '<div class="opis">'.$wiersz['opis'].'</div>';
+                echo '</div>';
+            }
+            ?>
+        </section>
 
-/* Styl selektora obrazu ( wyłącznie selektor znacznika ) */
-img {
-    margin: 4px;
-    float: left; /* lub display: inline-block z ustawioną szerokością wg wymagań grafiki */
-}
+        <aside>
+            <h2>Koszyk</h2>
+            <p>Zalogowano: Anna Kowalska</p>
+            <ol>
+                <?php
+                // Skrypt 3 - obsługa koszyka i listy zakupów klienta o id = 1
+                $kosztCalkowity = 0;
+                $wynikKoszyk = mysqli_query($polaczenie, "SELECT meble.nazwa, meble.cena FROM meble JOIN zakupy ON meble.idMeble = zakupy.idMeble WHERE zakupy.idKlienci = 1");
+                
+                while($produkt = mysqli_fetch_array($wynikKoszyk)) {
+                    echo '<li>'.$produkt['nazwa'].', cena: '.$produkt['cena'].'</li>';
+                    $kosztCalkowity += $produkt['cena'];
+                }
+                ?>
+            </ol>
+            <?php
+            echo '<p>Koszt całkowity: '.$kosztCalkowity.'</p>';
+            
+            // Zamknięcie połączenia z bazą danych
+            mysqli_close($polaczenie);
+            ?>
+        </aside>
+    </main>
 
-/* Styl selektora tabeli ( wyłącznie selektor znacznika ) */
-table {
-    width: 90%;
-    border: 1px dotted black;
-    border-collapse: collapse;
-    margin: 0 auto;
-}
-
-/* Styl selektora odnośnika ( wyłącznie selektor znacznika ) */
-a {
-    display: block;
-    background-color: DodgerBlue;
-    color: white;
-    width: 65%;
-    font-size: 130%;
-    margin: 10px auto;
-    text-decoration: none;
-}
-
-/* Zmiana tła odnośnika po najechaniu kursorem */
-a:hover {
-    background-color: RoyalBlue;
-}
+    <footer>
+        <p>Stronę wykonał: 00000000000</p> <!-- Zastąp swoim numerem zdającego (PESEL) -->
+    </footer>
+</body>
+</html>
