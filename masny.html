@@ -1,45 +1,46 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Najlepsze gry | PoGRAJmy!</title>
-    <link rel="stylesheet" href="styl_gier.css">
-    <script src="skrypty.js"></script>
-</head>
-<body>
-    <header>
-        <section>
-            <h2><a href="index.html">PoGRAJmy!</a></h2>
-        </section>
-        <section>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Strona główna</a></li>
-                    <li><a href="onas.html">O nas</a></li>
-                </ul>
-            </nav>
-        </section>
-    </header>
-    
-    <main>
-        <h1>Oto nasz wybór najciekawszych gier</h1>
-        <div>
-            <img src="gra1.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra2.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra3.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra4.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra5.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra6.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra7.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra8.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra9.jpg" alt="Miniatura gry" title="Tytuł gry">
-            <img src="gra10.jpg" alt="Miniatura gry" title="Tytuł gry">
-        </div>
-    </main>
+body {
+    font-family: "Segoe UI", Tahoma;
+}
 
-    <footer>
-        <p>Autor: <strong id="nr-zdajacego">00000000000</strong></p>
-        <p>Liczba wejść na stronę: </p>
-    </footer>
-</body>
-</html>
+header {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+header > section:first-of-type {
+    width: 40%;
+}
+
+header > section:last-of-type {
+    width: 60%;
+    text-align: right;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #0077A2;
+    padding: 1em;
+}
+
+h1 {
+    text-align: center;
+}
+
+img {
+    width: 20 em;
+    margin: 1 em;
+}
+
+img:hover {
+    outline: 3 px dashed #E30613;
+}
